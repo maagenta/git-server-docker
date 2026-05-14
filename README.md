@@ -9,10 +9,10 @@ A self-hosted Git server running over SSH in a Docker container, built on Alpine
 
 ## Setup
 
-1. **Add your SSH public key** to `authorized_keys`:
+1. **Add your SSH public key** to `authorized_keys` (optional, can be done later)
 
 ```bash
-cat ~/.ssh/id_ed25519.pub >> authorized_keys
+cat /home/user/.ssh/id_ed25519.pub >> authorized_keys
 ```
 
 2. **Start the server:**
@@ -48,6 +48,8 @@ git remote add origin ssh://git@localhost:2222/home/git/repos/my-repo.git
 ```
 
 ## Commands
+
+Git shell only allows git operations by default. Custom commands extend it with repository management capabilities like creating, deleting, and restoring repos. They are written in Bash and located in `git-shell-commands/`.
 
 Commands are run over SSH:
 
@@ -85,14 +87,12 @@ ssh git@localhost -p 2222 empty-trash
 
 ## Authentication
 
-Password authentication is disabled. Only SSH key authentication is allowed. Add authorized public keys to the `authorized_keys` file before starting the container.
+Password authentication is disabled. Only SSH key authentication is allowed.
 
-## Docker Compose commands
+Add a public key to the `authorized_keys` file:
 
 ```bash
-docker compose up -d          # Start in background
-docker compose down           # Stop and remove containers
-docker compose up --build -d  # Rebuild image and start
-docker compose logs -f        # Follow live logs
-docker compose ps             # Check container status
+cat /home/user/.ssh/id_ed25519.pub >> authorized_keys
 ```
+
+You can add keys at any time, before or after the container is running. Since `authorized_keys` is a bind mount, the server will picks up changes instantly with no restart needed.
