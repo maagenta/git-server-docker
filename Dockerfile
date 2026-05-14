@@ -3,7 +3,8 @@ FROM alpine
 RUN apk add --no-cache git openssh
 
 # Create git user with git-shell
-RUN adduser -D -s /usr/bin/git-shell git
+RUN adduser -D -s /usr/bin/git-shell git && \
+    passwd -u git
 
 # Create directory structure
 RUN mkdir -p /home/git/.ssh /home/git/repos /home/git/trash && \
