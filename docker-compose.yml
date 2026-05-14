@@ -1,6 +1,7 @@
 services:
   git-server:
     build: .
+    image: git-server
     container_name: git-server
     ports:
       - "2222:22"
