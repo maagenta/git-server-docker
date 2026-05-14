@@ -4,7 +4,6 @@ trash/
 ssh_host_keys/
 
 # SSH keys
-authorized_keys
 *.pem
 *.key
 
