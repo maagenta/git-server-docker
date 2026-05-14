@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ -z "$(ls /home/git/repos/*.git 2>/dev/null)" ]; then
-    echo "No repositories found.."
+    echo "No repositories found."
     exit 0
 fi
-ls /home/git/repos/
+ls /home/git/repos/ | sed 's/\.git$//'

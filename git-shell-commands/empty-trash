@@ -3,5 +3,8 @@ if [ -z "$(ls /home/git/trash/*.git 2>/dev/null)" ]; then
     echo "Trash is empty."
     exit 0
 fi
-rm -rf /home/git/trash/*.git
+if ! rm -rf /home/git/trash/*.git; then
+    echo "Trash couldn't be emptied"
+    exit 1
+fi
 echo "Trash emptied."

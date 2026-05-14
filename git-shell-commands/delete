@@ -7,5 +7,12 @@ if [ ! -d "/home/git/repos/$1.git" ]; then
     echo "Repo $1 does not exist."
     exit 1
 fi
-mv /home/git/repos/$1.git /home/git/trash/$1.git
+if [ -d "/home/git/trash/$1.git" ]; then
+    echo "Repo $1 already exists in trash."
+    exit 1
+fi
+if ! mv /home/git/repos/$1.git /home/git/trash/$1.git; then
+    echo "Repo $1 couldn't be moved to trash."
+    exit 1
+fi
 echo "Repo $1 moved to trash."

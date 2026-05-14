@@ -11,5 +11,8 @@ if [ -d "/home/git/repos/$1.git" ]; then
     echo "Repo $1 already exists in repos."
     exit 1
 fi
-mv /home/git/trash/$1.git /home/git/repos/$1.git
+if ! mv /home/git/trash/$1.git /home/git/repos/$1.git; then
+    echo "Repo $1 couldn't be restored."
+    exit 1
+fi
 echo "Repo $1 restored."

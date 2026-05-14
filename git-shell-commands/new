@@ -3,5 +3,12 @@ if [ -z "$1" ]; then
     echo "Usage: new <repo-name>"
     exit 1
 fi
-git init --bare /home/git/repos/$1.git
+if [ -d "/home/git/repos/$1.git" ]; then
+    echo "Repo $1 already exists."
+    exit 1
+fi
+if ! git init --bare /home/git/repos/$1.git; then
+    echo "Repo $1 couldn't be created."
+    exit 1
+fi
 echo "Repo $1 created."
