@@ -1,0 +1,15 @@
+#!/bin/sh
+if [ -z "$1" ]; then
+    echo "Usage: restore-repository <repo-name>"
+    exit 1
+fi
+if [ ! -d "/home/git/trash/$1.git" ]; then
+    echo "Repo $1 is not in trash."
+    exit 1
+fi
+if [ -d "/home/git/repos/$1.git" ]; then
+    echo "Repo $1 already exists in repos."
+    exit 1
+fi
+mv /home/git/trash/$1.git /home/git/repos/$1.git
+echo "Repo $1 restored."

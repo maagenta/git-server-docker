@@ -1,0 +1,12 @@
+services:
+  git-server:
+    build: .
+    container_name: git-server
+    ports:
+      - "2222:22"
+    volumes:
+      - ./repos:/home/git/repos
+      - ./trash:/home/git/trash
+      - ./authorized_keys:/home/git/.ssh/authorized_keys
+      - ./ssh_host_keys:/etc/ssh
+    restart: unless-stopped
