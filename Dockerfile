@@ -9,7 +9,8 @@ RUN adduser -D -s /usr/bin/git-shell git && \
 # Create directory structure
 RUN mkdir -p /home/git/.ssh /home/git/repos /home/git/trash && \
     chmod 700 /home/git/.ssh && \
-    chown -R git:git /home/git
+    chown -R git:git /home/git && \
+    ln -s /home/git/repos /repos
 
 # Copy custom git-shell commands
 COPY git-shell-commands/ /home/git/git-shell-commands/

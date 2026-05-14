@@ -44,13 +44,13 @@ git-server/
 The server runs on port `2222`. Use `git@localhost` as the remote:
 
 ```bash
-git clone ssh://git@localhost:2222/home/git/repos/my-repo.git
+git clone ssh://git@localhost:2222/repos/my-repo.git
 ```
 
 Or add a remote to an existing repo:
 
 ```bash
-git remote add origin ssh://git@localhost:2222/home/git/repos/my-repo.git
+git remote add origin ssh://git@localhost:2222/repos/my-repo.git
 ```
 
 ## Commands
