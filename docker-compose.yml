@@ -2,7 +2,7 @@ services:
   git-server:
     build: .
     image: git-server-img
-    container_name: git
+    container_name: git-server
     ports:
       - "2222:22"
     volumes:
