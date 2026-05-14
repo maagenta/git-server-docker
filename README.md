@@ -21,6 +21,12 @@ cat /home/user/.ssh/id_ed25519.pub >> authorized_keys
 docker compose up -d
 ```
 
+> **Note:** You can change the volume paths in `docker-compose.yml` to any location on your system. However, the `authorized_keys` file must already exist at that location **before** starting the container. If it doesn’t exist, Docker will create a directory in its place, and SSH authentication will not work.
+> To avoid this, please copy or create `authorized_keys` at your chosen path before launching the container.
+> ```bash
+> cp authorized_keys /git/server/repo/host/location
+> ```
+
 ## Project structure
 
 ```
