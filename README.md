@@ -2,6 +2,15 @@
 
 A self-hosted Git server running over SSH in a Docker container, built on Alpine Linux.
 
+## Features
+
+- SSH key authentication only — no passwords
+- Custom repository management commands via git-shell
+- Trash system — deleted repositories are recoverable
+- Persistent data via bind mounts — survives container rebuilds
+- SSH keys can be added at any time without restarting
+- Auto-starts with the system
+
 ## Requirements
 
 - Docker
