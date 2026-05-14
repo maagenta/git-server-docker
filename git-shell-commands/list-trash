@@ -1,2 +1,6 @@
 #!/bin/sh
+if [ -z "$(ls /home/git/trash/*.git 2>/dev/null)" ]; then
+    echo "Trash is empty."
+    exit 0
+fi
 ls /home/git/trash/
