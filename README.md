@@ -1,20 +1,15 @@
 # Git Server
 
-A self-hosted Git server running over SSH in a Docker container, built on Alpine Linux.
+Self-hosted Git server running over SSH in a Docker container.
 
 ## Features
 
-- SSH key authentication only — no passwords
+- SSH key authentication only (no passwords)
 - Custom repository management commands via git-shell
-- Trash system — deleted repositories are recoverable
-- Persistent data via bind mounts — survives container rebuilds
+- Trash system so deleted repositories are recoverable
+- Persistent data via bind mount
 - SSH keys can be added at any time without restarting
 - Auto-starts with the system
-
-## Requirements
-
-- Docker
-- Docker Compose
 
 ## Setup
 
@@ -30,23 +25,11 @@ cat /home/user/.ssh/id_ed25519.pub >> authorized_keys
 docker compose up -d
 ```
 
-> **Note:** You can change the volume paths in `docker-compose.yml` to any location on your system. However, the `authorized_keys` file must already exist at that location **before** starting the container. If it doesn’t exist, Docker will create a directory in its place, and SSH authentication will not work.
-> To avoid this, please copy or create `authorized_keys` at your chosen path before launching the container.
+> **Important:** You can change the volume paths in `docker-compose.yml` to any location on the host. However, the `authorized_keys` file must already exist at that location **before** starting the container. If it doesn’t exist, Docker (as it does by default) will create a directory in its place, and SSH authentication will not work.
+> To avoid this copy or create `authorized_keys` at your chosen path before launching the container.
 > ```bash
-> cp authorized_keys /git/server/repo/host/location
+> cp authorized_keys /host/bind-mount/location
 > ```
-
-## Project structure
-
-```
-git-server/
-├── docker-compose.yml
-├── Dockerfile
-├── authorized_keys        # SSH public keys allowed to connect
-├── repos/                 # Git repositories
-├── trash/                 # Deleted repositories (recoverable)
-└── ssh_host_keys/         # SSH host keys (persisted across rebuilds)
-```
 
 ## Connecting
 
@@ -64,13 +47,15 @@ git remote add origin ssh://git@localhost:2222/repos/my-repo.git
 
 ## Commands
 
-Git shell only allows git operations by default. Custom commands extend it with repository management capabilities like creating, deleting, and restoring repos. They are written in Bash and located in `git-shell-commands/`.
+I added some git-shell custom commands to extend the repository management capabilities as creating, deleting, and restoring repos. They are written in Bash and are located in `git-shell-commands/`.
 
 Commands are run over SSH:
 
 ```bash
 ssh git@localhost -p 2222 <command>
 ```
+
+Or you can access the git-shell and enter the commands interactively.
 
 | Command | Description |
 |---|---|
@@ -81,30 +66,9 @@ ssh git@localhost -p 2222 <command>
 | `restore-repository <repo-name>` | Restore a repository from trash |
 | `empty-trash` | Permanently delete all repositories in trash |
 
-### Examples
-
-```bash
-# Create a new repo
-ssh git@localhost -p 2222 new my-repo
-
-# List repos
-ssh git@localhost -p 2222 list
-
-# Delete a repo (moves to trash)
-ssh git@localhost -p 2222 delete my-repo
-
-# Restore it
-ssh git@localhost -p 2222 restore-repository my-repo
-
-# Permanently empty the trash
-ssh git@localhost -p 2222 empty-trash
-```
-
 ## Authentication
 
-Password authentication is disabled. Only SSH key authentication is allowed.
-
-Add a public key to the `authorized_keys` file:
+Password authentication is disabled. Only SSH key authentication is allowed. Therefore, as mentioned above, it is necessary to add the client's public key to the `authorized_keys` file:
 
 ```bash
 cat /home/user/.ssh/id_ed25519.pub >> authorized_keys
