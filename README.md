@@ -15,9 +15,30 @@ Self-hosted Git server running over SSH in a Docker container.
 
 1. **Add your SSH public key** to `authorized_keys` (optional, can be done later)
 
+The key pair is generated on the **client** (the machine you will connect from), but the public key is added to `authorized_keys` on the **server** (the machine running the container). The private key never leaves the client.
+
+On the client, generate a key if you don't have one and print the public key:
+
 ```bash
-cat /home/user/.ssh/id_ed25519.pub >> authorized_keys
+ssh-keygen -t ed25519
+cat ~/.ssh/id_ed25519.pub
 ```
+
+On the server, append that line to `authorized_keys`:
+
+```bash
+echo "ssh-ed25519 AAAA... user@client" >> authorized_keys
+```
+
+If the client and the server are the same machine, you can do it in one step:
+
+```bash
+cat ~/.ssh/id_ed25519.pub >> authorized_keys
+```
+
+> **Note:** `ssh-copy-id` does not work with this server, since password authentication is disabled and the `git` user is restricted to `git-shell`. Keys must be added to `authorized_keys` manually.
+>
+> When connecting from another machine, replace `localhost` with the server's IP or hostname (e.g. `ssh://git@192.168.1.50:2222/repos/my-repo.git`).
 
 2. **Start the server:**
 
@@ -39,7 +60,7 @@ The server runs on port `2222`. Use `git@localhost` as the remote:
 git clone ssh://git@localhost:2222/repos/my-repo.git
 ```
 
-Or add a remote to an existing repo:
+Or, if you already have a local repo, add this server as its remote:
 
 ```bash
 git remote add origin ssh://git@localhost:2222/repos/my-repo.git
@@ -68,10 +89,6 @@ Or you can access the git-shell and enter the commands interactively.
 
 ## Authentication
 
-Password authentication is disabled. Only SSH key authentication is allowed. Therefore, as mentioned above, it is necessary to add the client's public key to the `authorized_keys` file:
+Password authentication is disabled. Only SSH key authentication is allowed. Therefore, it is necessary to add the client's public key to the `authorized_keys` file, as described in [Setup](#setup).
 
-```bash
-cat /home/user/.ssh/id_ed25519.pub >> authorized_keys
-```
-
-You can add keys at any time, before or after the container is running. Since `authorized_keys` is a bind mount, the server will picks up changes instantly with no restart needed.
+You can add keys at any time, before or after the container is running. Since `authorized_keys` is a bind mount, the server picks up changes instantly with no restart needed.
