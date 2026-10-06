@@ -2,6 +2,9 @@ FROM alpine
 
 RUN apk add --no-cache git openssh
 
+# Default branch for new repos, so HEAD points to the branch clients push
+RUN git config --system init.defaultBranch main
+
 # Create git user with git-shell
 RUN adduser -D -s /usr/bin/git-shell git && \
     passwd -u git
