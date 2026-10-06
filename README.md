@@ -130,3 +130,21 @@ git> exit
 Password authentication is disabled. Only SSH key authentication is allowed. Therefore, it is necessary to add the client's public key to the `authorized_keys` file, as described in [Setup](#setup).
 
 You can add keys at any time, before or after the container is running. Since `authorized_keys` is a bind mount, the server picks up changes instantly with no restart needed.
+
+## Updating
+
+To update the server after pulling new changes, rebuild the image and recreate the container:
+
+```bash
+git pull
+docker compose up -d --build
+```
+
+The old container is replaced by a new one built from the updated `Dockerfile`. Everything stored in the bind mounts (repositories, trash, `authorized_keys` and SSH host keys) is kept, but any change made by hand inside the container is lost.
+
+> **Important:** The new container is created only from the current `docker-compose.yml`, Docker does not remember the previous one. If you changed the volume paths, make sure they are still the same before updating. Otherwise the container will start with empty folders: your data is not deleted, but it stays at the old path and the server no longer sees it.
+>
+> You can check the paths in use before and after updating with:
+> ```bash
+> docker inspect git-server --format '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{println}}{{end}}'
+> ```
