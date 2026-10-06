@@ -2,6 +2,9 @@ FROM alpine
 
 RUN apk add --no-cache git openssh
 
+# Remove Alpine's welcome message shown on SSH login
+RUN rm -f /etc/motd
+
 # Default branch for new repos, so HEAD points to the branch clients push
 RUN git config --system init.defaultBranch main
 
