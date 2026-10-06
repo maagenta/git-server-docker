@@ -1,14 +1,18 @@
 #!/bin/sh
-if [ -z "$1" ]; then
+name="${1%.git}"
+if [ -z "$name" ]; then
     echo "Usage: new <repo-name>"
     exit 1
 fi
-if [ -d "/home/git/repos/$1.git" ]; then
-    echo "Repo $1 already exists."
+if [ "$name" != "$1" ]; then
+    echo "Note: .git is added automatically, using \"$name\" as the repo name."
+fi
+if [ -d "/home/git/repos/$name.git" ]; then
+    echo "Repo $name already exists."
     exit 1
 fi
-if ! git init --bare /home/git/repos/$1.git; then
-    echo "Repo $1 couldn't be created."
+if ! git init --quiet --bare /home/git/repos/$name.git; then
+    echo "Repo $name couldn't be created."
     exit 1
 fi
-echo "Repo $1 created."
+echo "Repo created as /repos/$name.git"

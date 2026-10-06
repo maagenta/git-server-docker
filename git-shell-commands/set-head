@@ -1,18 +1,22 @@
 #!/bin/sh
-if [ -z "$1" ] || [ -z "$2" ]; then
+name="${1%.git}"
+if [ -z "$name" ] || [ -z "$2" ]; then
     echo "Usage: set-head <repo-name> <branch>"
     exit 1
 fi
-if [ ! -d "/home/git/repos/$1.git" ]; then
-    echo "Repo $1 does not exist."
+if [ "$name" != "$1" ]; then
+    echo "Note: .git is added automatically, using \"$name\" as the repo name."
+fi
+if [ ! -d "/home/git/repos/$name.git" ]; then
+    echo "Repo $name does not exist."
     exit 1
 fi
-if ! git -C /home/git/repos/$1.git show-ref --verify --quiet "refs/heads/$2"; then
-    echo "Branch $2 does not exist in repo $1."
+if ! git -C /home/git/repos/$name.git show-ref --verify --quiet "refs/heads/$2"; then
+    echo "Branch $2 does not exist in repo $name."
     exit 1
 fi
-if ! git -C /home/git/repos/$1.git symbolic-ref HEAD "refs/heads/$2"; then
-    echo "HEAD of repo $1 couldn't be changed."
+if ! git -C /home/git/repos/$name.git symbolic-ref HEAD "refs/heads/$2"; then
+    echo "HEAD of repo $name couldn't be changed."
     exit 1
 fi
-echo "HEAD of repo $1 now points to $2."
+echo "HEAD of repo $name now points to $2."
