@@ -72,7 +72,7 @@ git remote add origin ssh://git@localhost:2222/repos/my-repo.git
 
 ### SSH config (optional)
 
-To avoid typing the user and port every time, add an alias on the **client** in `~/.ssh/config`:
+To avoid typing the host, user and port every time, add an alias on the **client** in `~/.ssh/config`:
 
 ```
 Host gitserver
