@@ -124,6 +124,7 @@ git> exit
 | `restore-repository <repo-name>` | Restore a repository from trash |
 | `empty-trash` | Permanently delete all repositories in trash |
 | `set-head <repo-name> <branch>` | Set the repository's default branch (`HEAD`) |
+| `help` | Show the welcome message and the list of commands |
 
 ## Authentication
 

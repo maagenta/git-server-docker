@@ -1,0 +1,18 @@
+#!/bin/sh
+cat <<'EOF'
+Welcome to the Git server!
+
+Available commands:
+  new <repo-name>                 Create a new bare repository
+  list                            List all repositories
+  delete <repo-name>              Move a repository to trash
+  list-trash                      List repositories in trash
+  restore-repository <repo-name>  Restore a repository from trash
+  empty-trash                     Permanently delete all repositories in trash
+  set-head <repo-name> <branch>   Set the repository's default branch (HEAD)
+  help                            Show this message
+  exit                            Close the session
+
+Clone a repository with:
+  git clone ssh://git@<host>:2222/repos/<repo-name>.git
+EOF
