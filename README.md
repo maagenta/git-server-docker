@@ -66,17 +66,28 @@ Or, if you already have a local repo, add this server as its remote:
 git remote add origin ssh://git@localhost:2222/repos/my-repo.git
 ```
 
+> **Note:** The repository must already exist on the server. You can create it manually or with the `new` command (over SSH or from the interactive shell). See [Commands](#commands).
+
 ## Commands
 
-I added some git-shell custom commands to extend the repository management capabilities as creating, deleting, and restoring repos. They are written in Bash and are located in `git-shell-commands/`.
+In addition, the Docker server includes custom git-shell commands for managing repositories, such as creating, deleting, and restoring them. They are written in Bash and located in `git-shell-commands/`.
 
-Commands are run over SSH:
+There are two ways to run them:
+
+**Single command:** pass the command as an argument to `ssh`. It runs and the connection closes:
 
 ```bash
-ssh git@localhost -p 2222 <command>
+ssh git@localhost -p 2222 new my-repo
 ```
 
-Or you can access the git-shell and enter the commands interactively.
+**Interactive shell:** connect without a command to open the git-shell, then enter as many commands as you need. Type `exit` to leave:
+
+```bash
+ssh git@localhost -p 2222
+git> new my-repo
+git> list
+git> exit
+```
 
 | Command | Description |
 |---|---|
