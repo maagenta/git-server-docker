@@ -66,7 +66,9 @@ Or, if you already have a local repo, add this server as its remote:
 git remote add origin ssh://git@localhost:2222/repos/my-repo.git
 ```
 
-> **Note:** The repository must already exist on the server. You can create it manually or with the `new` command (over SSH or from the interactive shell). See [Commands](#commands).
+> **Note:** `/repos` is a symlink to `/home/git/repos` inside the container, so both paths work in the URL. On the host, repositories are stored in `./repos` (bind-mounted to `/home/git/repos`, see `docker-compose.yml`).
+
+> **Note:** The repository must already exist on the server. You can create it with the `new` command (over SSH or from the interactive shell), or manually with `docker exec -u git git-server git init --bare /repos/my-repo.git`. See [Commands](#commands).
 
 ## Commands
 
