@@ -70,6 +70,30 @@ git remote add origin ssh://git@localhost:2222/repos/my-repo.git
 
 > **Note:** The repository must already exist on the server. You can create it with the `new` command (over SSH or from the interactive shell), or manually with `docker exec -u git git-server git init --bare /repos/my-repo.git`. See [Commands](#commands).
 
+### SSH config (optional)
+
+To avoid typing the user and port every time, add an alias on the **client** in `~/.ssh/config`:
+
+```
+Host gitserver
+    HostName localhost        # or the server's IP/hostname
+    User git
+    Port 2222
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+```
+
+Then you can use `gitserver` instead of the full address:
+
+```bash
+git clone gitserver:repos/my-repo.git
+git remote add origin gitserver:repos/my-repo.git
+ssh gitserver new my-repo
+ssh gitserver          # interactive shell
+```
+
+> **Note:** In the short `gitserver:repos/my-repo.git` form, the path is relative to the `git` user's home (`/home/git`). `gitserver:/repos/my-repo.git` also works thanks to the `/repos` symlink.
+
 ## Commands
 
 In addition, the Docker server includes custom git-shell commands for managing repositories, such as creating, deleting, and restoring them. They are written in Bash and located in `git-shell-commands/`.
